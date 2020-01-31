@@ -3,4 +3,5 @@ Flask
 Flask-SocketIO
 gunicorn
 Jinja2
+requests
 Werkzeug
