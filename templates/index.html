@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block body %}
+    <h4>Index Page</h4>
+    <h6>
+        Signed in as '{{ user }}'
+    </h6>
+    <div>
+        {% if rooms|length > 0 %}
+            <ul>
+                {% for room in rooms %}
+                    <li>
+                        <a href="{{ url_for('room', room_name=room.room) }}">{{ room.room }}</a>
+                        {% if room.users|length > 0 %}
+                            ( users:
+                            {% for user in room.users %}
+                                {{ user }}
+                                {% if not loop.last %}
+                                    ,
+                                {% endif %}
+                            {% endfor %}
+                            )
+                        {% else %}
+                            ( empty )
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            No rooms created
+        {% endif %}
+    </div>
+    <br>
+    <div>
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+{% endblock %}

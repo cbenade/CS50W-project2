@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Room: {{ room }} 
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='room.js') }}"></script> 
+{% endblock %}
+
+{% block body %}
+    <h4>Room: <span id="room">{{ room.room }}</span></h4>
+    <h6>
+        Signed in as '{{ user }}'
+    </h6>
+    <div id="message_list">
+        {% if room.messages|length > 0 %}
+            {% for message in room.messages %}
+                <div class="message_entry">{{ message }}</div>
+            {% endfor %}
+        {% else %}
+            <div id="empty_message">Be the first to add a message to this room!</div>
+        {% endif %}
+    </div>
+    <div>
+        <form id="form">
+            <input id="message" type="text" placeholder="message" autocomplete="off" required>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+{% endblock %}

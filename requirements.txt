@@ -1,0 +1,6 @@
+eventlet
+Flask
+Flask-SocketIO
+gunicorn
+Jinja2
+Werkzeug
