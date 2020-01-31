@@ -47,10 +47,14 @@ def index():
 ##################################################################################################################
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if session["username"] is not None:
+    try:
         if session["username"] in users:
             users.remove(session["username"])
+    except:
+        pass
+    finally:
         session.clear()
+
     if request.method == "POST":
         username = request.form.get("username")
         if username not in users:
