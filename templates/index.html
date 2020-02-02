@@ -4,6 +4,20 @@
     Index
 {% endblock %}
 
+{% block js %}
+    {% raw -%}
+        <script id="new_channel" type="text/x-handlebars-template">
+            <li class="room_entry">
+                <a href="{{ href }}">{{ room }}</a>
+                <span> ( </span>
+                <span id="{{ room }}_message_count">0</span>
+                <span> Messages )</span>
+            </li>
+        </script>
+    {%- endraw %}
+    <script src="{{ url_for('static', filename='index.js') }}"></script> 
+{% endblock %}
+
 {% block body %}
     <h4>Index Page</h4>
     <h6>
@@ -11,28 +25,26 @@
     </h6>
     <div>
         {% if rooms|length > 0 %}
-            <ul>
+            <ul id="room_list">
                 {% for room in rooms %}
-                    <li>
+                    <li class="room_entry">
                         <a href="{{ url_for('room', room_name=room.room) }}">{{ room.room }}</a>
-                        {% if room.users|length > 0 %}
-                            ( users:
-                            {% for user in room.users %}
-                                {{ user }}
-                                {% if not loop.last %}
-                                    ,
-                                {% endif %}
-                            {% endfor %}
-                            )
-                        {% else %}
-                            ( empty )
-                        {% endif %}
+                        <span> ( </span>
+                        <span id="{{ room.room }}_message_count">{{ room.message_count() }}</span>
+                        <span> Messages )</span>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            No rooms created
+            <span id="empty_message">&ltNo rooms created&gt</span>
         {% endif %}
+    </div>
+    <br>
+    <div>
+        <form id="form">
+            <input id="channel" type="text" placeholder="new channel name" autocomplete="off" required>
+            <button type="submit">Create Channel</button>
+        </form>
     </div>
     <br>
     <div>

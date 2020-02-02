@@ -3,6 +3,7 @@ import requests
 
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_socketio import SocketIO, emit
+from datetime import datetime
 
 from helpers import login_required
 from models import Message, Room 
@@ -17,43 +18,30 @@ socketio = SocketIO(app)
 # Global Variables
 users = set()
 rooms = []
-
 r1 = Room("room1")
-r1.add_user("alice")
-r1.add_user("bob")
-r1.add_user("charlie")
-
 r2 = Room("room2")
-r2.add_user("don")
-r2.add_user("eddy")
-r2.add_user("frank")
-
-r3 = Room("room3")
-
-r1.add_message("alice", "hi")
-r1.add_message("bob", "hello")
-r1.add_message("charlie", "bonjour")
-
 rooms.append(r1)
 rooms.append(r2)
-rooms.append(r3)
 
 ##################################################################################################################
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    return render_template("index.html", user=session["username"], rooms=rooms)
+    if request.method == "POST":
+        session["room"] = None
+        return redirect("/")
+    else:
+        try:
+            if session["room"] is not None:
+                return redirect(f'/room/{session["room"]}')
+        except:
+            pass    
+        return render_template("index.html", user=session["username"], rooms=rooms)
 
 ##################################################################################################################
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    try:
-        if session["username"] in users:
-            users.remove(session["username"])
-    except:
-        pass
-    finally:
-        session.clear()
+    clear_user_session()
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -71,9 +59,8 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
-    if session["username"] in users:
-        users.remove(session["username"])
-    session.clear()
+    clear_user_session()
+
     return redirect("/login")
 
 ##################################################################################################################
@@ -82,20 +69,45 @@ def logout():
 def room(room_name):
     for room in rooms:
         if room.room == room_name:
+            session["room"] = room_name
             return render_template("room.html", user=session["username"], room=room)
 
     # Room name was not found
-    return "Error, that room does not exist"
+    return "Sorry, that room does not exist"
 
 ##################################################################################################################
 # SocketIO functions
+@socketio.on('channel_creation_request')
+def create_channel(data):
+    room_name = data["room"]
+    for room in rooms:
+        if room.room == room_name:
+            return
+    rooms.append(Room(room_name))
+    emit('channel_created', data, broadcast=True)
+
 @socketio.on('message_sent')
 def relay_message(data):
     for room in rooms:
         if room.room == data['room']:
-            room.add_message(session["username"], data['message'])
-    data["message"] = f'{session["username"]}: {data["message"]}'
+            time = datetime.now()
+            time = f'{time}'[11:19] + ', ' + f'{time}'[0:10]
+            room.add_message(session["username"], data['text'], time)
+    data["text"] = f'{session["username"]}: {data["text"]}'
+    data["time"] = time
     emit('message_relayed', data, broadcast=True)
+
+##################################################################################################################
+# Miscellaneous helper functions
+def clear_user_session():
+    try:
+        if session["username"] in users:
+            users.remove(session["username"])
+    except:
+        pass
+    finally:
+        session.clear()
+
 
 ##################################################################################################################
 if __name__ == "__main__":

@@ -1,10 +1,18 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Room: {{ room }} 
+    Room: {{ room.room }} 
 {% endblock %}
 
 {% block js %}
+    {% raw -%}
+        <script id="new_message" type="text/x-handlebars-template">
+            <div onmouseover="unhidetimes()" onmouseout="hidetimes()">
+                <span class="message_entry">{{ message }}</span>
+                <span style="padding-left: 25px; font-size: x-small;" hidden class="message_time">(Sent {{ time }})</span>
+            </div>
+        </script>
+    {%- endraw %}
     <script src="{{ url_for('static', filename='room.js') }}"></script> 
 {% endblock %}
 
@@ -16,16 +24,26 @@
     <div id="message_list">
         {% if room.messages|length > 0 %}
             {% for message in room.messages %}
-                <div class="message_entry">{{ message }}</div>
+                <div onmouseover="unhidetimes()" onmouseout="hidetimes()">
+                    <span class="message_entry">{{ message }}</span>
+                    <span style="padding-left: 25px; font-size: x-small;" hidden class="message_time">(Sent {{ message.time }})</span>
+                </div>
             {% endfor %}
         {% else %}
-            <div id="empty_message">Be the first to add a message to this room!</div>
+            <div id="empty_message">&ltNo messages sent&gt</div>
         {% endif %}
     </div>
+    <br>
     <div>
         <form id="form">
             <input id="message" type="text" placeholder="message" autocomplete="off" required>
             <button type="submit">Send Message</button>
+        </form>
+    </div>
+    <br>
+    <div>
+        <form action="{{ url_for('index') }}" method="post">
+            <button type="submit">Exit Room</button>
         </form>
     </div>
 {% endblock %}
