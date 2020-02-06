@@ -7,8 +7,8 @@
 {% block js %}
     {% raw -%}
         <script id="new_message" type="text/x-handlebars-template">
-            <div onmouseover="unhidetimes()" onmouseout="hidetimes()">
-                <span class="message_entry">{{ message }}</span>
+            <div onmouseover="unhide_times()" onmouseout="hide_times()">
+                <span class="message_entry">{{ text }}</span>
                 <span style="padding-left: 25px; font-size: x-small;" hidden class="message_time">(Sent {{ time }})</span>
             </div>
         </script>
@@ -17,21 +17,12 @@
 {% endblock %}
 
 {% block body %}
-    <h4>Room: <span id="room">{{ room.room }}</span></h4>
+    <h4>Room: <span id="room">{{ room }}</span></h4>
     <h6>
         Signed in as '{{ user }}'
     </h6>
     <div id="message_list">
-        {% if room.messages|length > 0 %}
-            {% for message in room.messages %}
-                <div onmouseover="unhidetimes()" onmouseout="hidetimes()">
-                    <span class="message_entry">{{ message }}</span>
-                    <span style="padding-left: 25px; font-size: x-small;" hidden class="message_time">(Sent {{ message.time }})</span>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div id="empty_message">&ltNo messages sent&gt</div>
-        {% endif %}
+        <div id="empty_message">&ltNo messages sent&gt</div>
     </div>
     <br>
     <div>
@@ -42,7 +33,7 @@
     </div>
     <br>
     <div>
-        <form action="{{ url_for('index') }}" method="post">
+        <form action="{{ url_for('exit') }}" method="post">
             <button type="submit">Exit Room</button>
         </form>
     </div>

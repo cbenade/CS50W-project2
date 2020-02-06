@@ -1,25 +1,43 @@
+const template = Handlebars.compile(document.querySelector('#new_message').innerHTML);
+
+// Add message to DOM
+function render_message(data) {
+
+    // Delete empty_message if it exists
+    const element = document.getElementById('empty_message');
+    if (element != null) {
+        element.parentNode.removeChild(element);
+    }
+    
+    // Add new message to DOM.
+    context = {
+        "text": data["text"],
+        "time": data["time"]
+    };
+    const content = template(context);
+    document.querySelector('#message_list').innerHTML += content;
+};
+
 // Functions used to hide/unhide timestamps when messages are moused over/out
-function hidetimes() {
+function hide_times() {
     document.querySelectorAll('.message_time').forEach(time => {
         time.hidden = true;
     });
 };
 
-function unhidetimes() {
+function unhide_times() {
     document.querySelectorAll('.message_time').forEach(time => {
         time.hidden = false;
     });
 }
 
-const template = Handlebars.compile(document.querySelector('#new_message').innerHTML);
-
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Set document variables
+    const room_name = document.querySelector('#room').innerHTML;
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-    // Variables
-    const room_name = document.querySelector('#room').innerHTML;
 
     // Add onsubmit property to form
     document.querySelector('#form').onsubmit = () => {
@@ -40,19 +58,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check message room tag prior to appending
         if (data.room === room_name) {
             
-            // Delete empty_message if it exists
-            const element = document.getElementById('empty_message');
-            if (element != null) {
-                element.parentNode.removeChild(element);
-            }
-
-            // Add new message to DOM.
-            context = {
-                "message": data.text,
-                "time": data.time
-            };
-            const content = template(context);
-            document.querySelector('#message_list').innerHTML += content;
-        }
+            render_message(data);
+        };
     });
+
+    // Initialize new request for existing message data
+    const request = new XMLHttpRequest();
+    request.open('POST', `/room/${room_name}`);
+
+    // Callback function for when request completes
+    request.onload = () => {
+
+        // Extract JSON data from request
+        const data = JSON.parse(request.responseText);
+
+        // Add messages to DOM
+        for (i = 0, len = data.length; i < len; i++) { 
+            render_message(data[i]);
+        };
+    };
+
+    // Send request
+    request.send();
+    return false;
 });

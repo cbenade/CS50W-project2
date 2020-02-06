@@ -8,10 +8,7 @@
     {% raw -%}
         <script id="new_channel" type="text/x-handlebars-template">
             <li class="room_entry">
-                <a href="{{ href }}">{{ room }}</a>
-                <span> ( </span>
-                <span id="{{ room }}_message_count">0</span>
-                <span> Messages )</span>
+                <a href="{{ href }}">{{ room }}</a> ( <span id="{{ room }}_message_count">{{ count }}</span> Messages )
             </li>
         </script>
     {%- endraw %}
@@ -24,20 +21,8 @@
         Signed in as '{{ user }}'
     </h6>
     <div>
-        {% if rooms|length > 0 %}
-            <ul id="room_list">
-                {% for room in rooms %}
-                    <li class="room_entry">
-                        <a href="{{ url_for('room', room_name=room.room) }}">{{ room.room }}</a>
-                        <span> ( </span>
-                        <span id="{{ room.room }}_message_count">{{ room.message_count() }}</span>
-                        <span> Messages )</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <span id="empty_message">&ltNo rooms created&gt</span>
-        {% endif %}
+        <span id="empty_message">&ltNo rooms created&gt</span>    
+        <ul id="room_list"></ul>
     </div>
     <br>
     <div>
