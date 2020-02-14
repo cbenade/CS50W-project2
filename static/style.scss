@@ -1,0 +1,89 @@
+// CSS variables
+$m1: 30px;
+$m2: 20px;
+$m3: 10px;
+$b1: dotted 1px black;
+$b2: dotted 1px black;
+// Center all app content
+body {
+    text-align: center;
+}
+// App title bar
+h1 {
+    background-color: #8DBDD8;
+    padding-top: $m1;
+    padding-bottom: $m1;
+}
+// Room Headers
+h4 {
+    margin-top: $m1;
+    margin-bottom: $m1;
+}
+// Signed in as item
+h6 {
+    margin-top: $m3;
+    margin-bottom: $m1;
+}
+// Menu CSS
+#room_list {
+    list-style: none;
+}
+.room_entry {
+    position: relative;
+    border-top: $b1;
+    margin-left: 31%;
+    margin-right: 34%;
+    font-size: 16px;
+    text-align: left;
+    .room {
+        font-size: small;
+        padding-left: 1%;
+        display: inline-block;
+        max-width: 65%;
+        word-wrap: break-word;
+    }
+    .count {
+        position: absolute;
+        font-size: x-small;
+        text-align: right;
+        right: 1%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+.room_entry:last-child {
+    border-bottom: $b1;
+}
+#logout_button {
+    margin-bottom: $m1;
+}
+// Room CSS
+.message_container {
+    position: relative;
+    border-top: $b2;
+    margin-left: 33%;
+    margin-right: 33%;
+    font-size: 16px;
+    text-align: left;
+    .message_entry {
+        font-size: small;
+        padding-left: 1%;
+        display: inline-block;
+        max-width: 65%;
+        word-wrap: break-word;
+    }
+    .message_time {
+        position: absolute;
+        font-size: x-small;
+        text-align: right;
+        right: 1%;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+.message_container:last-child {
+    border-bottom: $b2;
+}
+#exit_button {
+    margin-bottom: $m1;
+}

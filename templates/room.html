@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Room: {{ room.room }} 
+    Flack: {{ room }} 
 {% endblock %}
 
 {% block js %}
     {% raw -%}
         <script id="new_message" type="text/x-handlebars-template">
-            <div onmouseover="unhide_times()" onmouseout="hide_times()">
+            <div class="message_container" onmouseover="unhide_times()" onmouseout="hide_times()">
                 <span class="message_entry">{{ text }}</span>
-                <span style="padding-left: 25px; font-size: x-small;" hidden class="message_time">(Sent {{ time }})</span>
+                <span class="message_time" hidden>(Sent {{ time }})</span>
             </div>
         </script>
     {%- endraw %}
@@ -17,12 +17,12 @@
 {% endblock %}
 
 {% block body %}
-    <h4>Room: <span id="room">{{ room }}</span></h4>
+    <h4><span id="room">{{ room }}</span></h4>
     <h6>
         Signed in as '{{ user }}'
     </h6>
     <div id="message_list">
-        <div id="empty_message">&ltNo messages sent&gt</div>
+        <div id="empty_message"></div>
     </div>
     <br>
     <div>
@@ -32,8 +32,8 @@
         </form>
     </div>
     <br>
-    <div>
-        <form action="{{ url_for('exit') }}" method="post">
+    <div id="exit_button">
+        <form action="{{ url_for('exit_room') }}" method="post">
             <button type="submit">Exit Room</button>
         </form>
     </div>

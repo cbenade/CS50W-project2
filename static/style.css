@@ -1,0 +1,89 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  background-color: #8DBDD8;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+h4 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+h6 {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+#room_list {
+  list-style: none;
+}
+
+.room_entry {
+  position: relative;
+  border-top: dotted 1px black;
+  margin-left: 31%;
+  margin-right: 34%;
+  font-size: 16px;
+  text-align: left;
+}
+.room_entry .room {
+  font-size: small;
+  padding-left: 1%;
+  display: inline-block;
+  max-width: 65%;
+  word-wrap: break-word;
+}
+.room_entry .count {
+  position: absolute;
+  font-size: x-small;
+  text-align: right;
+  right: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.room_entry:last-child {
+  border-bottom: dotted 1px black;
+}
+
+#logout_button {
+  margin-bottom: 30px;
+}
+
+.message_container {
+  position: relative;
+  border-top: dotted 1px black;
+  margin-left: 33%;
+  margin-right: 33%;
+  font-size: 16px;
+  text-align: left;
+}
+.message_container .message_entry {
+  font-size: small;
+  padding-left: 1%;
+  display: inline-block;
+  max-width: 65%;
+  word-wrap: break-word;
+}
+.message_container .message_time {
+  position: absolute;
+  font-size: x-small;
+  text-align: right;
+  right: 1%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.message_container:last-child {
+  border-bottom: dotted 1px black;
+}
+
+#exit_button {
+  margin-bottom: 30px;
+}
+
+/*# sourceMappingURL=style.css.map */

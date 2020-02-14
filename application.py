@@ -38,9 +38,9 @@ def index():
         return render_template("index.html", user=session["username"], rooms=rooms)
 
 ##################################################################################################################
-@app.route("/exit", methods=["GET", "POST"])
+@app.route("/menu", methods=["GET", "POST"])
 @login_required
-def exit():
+def exit_room():
     session["room"] = None
     return redirect("/")
 

@@ -20,6 +20,11 @@ function render_channel(data) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Used to return the user to the menu when clicking the back button in a room page. This is necessary
+    // due to flask using redirects with session['room'] unless user has specifically requested to
+    // leave a room with either the back-button or by clicking 'Exit Room'.
+    history.pushState(null, null, '/menu');
+    
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -38,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add new channel to list of rooms 
     socket.on('channel_created', data => {
         render_channel(data);
+        // Set scroll to bottom of page
+        window.scrollTo(0, document.body.scrollHeight);
     });
 
     // Increment message counter for corresponding room
@@ -62,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         for (i = 0, len = data.length; i < len; i++) { 
             render_channel(data[i]);
         };
+
+        // Add empty message if no messages returned
+        const empty = document.querySelector('#empty_message');
+        if (empty !== null) {
+            empty.innerHTML = '&ltNo rooms created&gt';
+        }
     };
 
     // Send request

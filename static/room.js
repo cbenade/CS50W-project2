@@ -29,7 +29,7 @@ function unhide_times() {
     document.querySelectorAll('.message_time').forEach(time => {
         time.hidden = false;
     });
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -59,7 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.room === room_name) {
             
             render_message(data);
+
+            // Set scroll to bottom of page
+            window.scrollTo(0, document.body.scrollHeight);
         };
+
+        
     });
 
     // Initialize new request for existing message data
@@ -76,6 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         for (i = 0, len = data.length; i < len; i++) { 
             render_message(data[i]);
         };
+
+        // Add empty message if no messages returned
+        const empty = document.querySelector('#empty_message');
+        if (empty !== null) {
+            empty.innerHTML = '&ltNo messages sent&gt';
+        }
     };
 
     // Send request
