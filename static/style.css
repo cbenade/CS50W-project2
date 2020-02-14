@@ -20,13 +20,12 @@ h6 {
 
 #room_list {
   list-style: none;
+  padding-left: 0;
 }
 
 .room_entry {
   position: relative;
   border-top: dotted 1px black;
-  margin-left: 31%;
-  margin-right: 34%;
   font-size: 16px;
   text-align: left;
 }
@@ -34,7 +33,6 @@ h6 {
   font-size: small;
   padding-left: 1%;
   display: inline-block;
-  max-width: 65%;
   word-wrap: break-word;
 }
 .room_entry .count {
@@ -46,6 +44,32 @@ h6 {
   transform: translateY(-50%);
 }
 
+@media (min-width: 1001px) {
+  .room_entry {
+    margin-left: 33%;
+    margin-right: 33%;
+  }
+}
+@media (max-width: 1000px) {
+  .room_entry {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+@media (min-width: 401px) {
+  .room {
+    max-width: 65%;
+  }
+}
+@media (max-width: 400px) {
+  .room {
+    max-width: 100%;
+  }
+
+  .count {
+    visibility: hidden;
+  }
+}
 .room_entry:last-child {
   border-bottom: dotted 1px black;
 }
@@ -57,8 +81,6 @@ h6 {
 .message_container {
   position: relative;
   border-top: dotted 1px black;
-  margin-left: 33%;
-  margin-right: 33%;
   font-size: 16px;
   text-align: left;
 }
@@ -78,6 +100,23 @@ h6 {
   transform: translateY(-50%);
 }
 
+@media (min-width: 1001px) {
+  .message_container {
+    margin-left: 33%;
+    margin-right: 33%;
+  }
+}
+@media (max-width: 1000px) {
+  .message_container {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+@media (max-width: 400px) {
+  .message_time {
+    visibility: hidden;
+  }
+}
 .message_container:last-child {
   border-bottom: dotted 1px black;
 }
